@@ -2,12 +2,23 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class DefaultController
 {
-    public function index(): Response
+    private $twig;
+
+    public function __construct(Environment $twig)
     {
-        return new Response('Accueil Jobeet - Hello');
+        $this->twig = $twig;
+    }
+    
+    public function index(Request $request): Response
+    {
+        return new Response($this->twig->render('default.html.twig', [
+            'name' => $request->get('name', 'World')
+        ]));
     }
 }
